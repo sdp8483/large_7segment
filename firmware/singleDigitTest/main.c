@@ -9,7 +9,8 @@
 #define SEG_E   BIT4
 #define SEG_F   BIT5
 #define SEG_G   BIT6
-#define ALLSEG  SEG_A + SEG_B + SEG_C + SEG_D + SEG_E + SEG_F + SEG_G
+#define SEG_DP  BIT7
+#define ALLSEG  SEG_A + SEG_B + SEG_C + SEG_D + SEG_E + SEG_F + SEG_G + SEG_DP
 
 // Numeral segment defines
 #define ZERO    SEG_A + SEG_B + SEG_C + SEG_D + SEG_E + SEG_F
@@ -41,19 +42,23 @@ int main(void)
 	P1OUT |= ALLSEG;                            // preload segment pins high (high = off)
 	P1DIR |= ALLSEG;                            // segment pins are output pins
 
+	P2OUT |= BIT0 + BIT1 + BIT6 + BIT7;         // preload segment pins high
+	P2DIR |= BIT0 + BIT1 + BIT6 + BIT7;         // set as output, makes ULP adviser happy
+	PAOUT |= 0xFF;
+	PADIR |= 0xFF;
+
 	PM5CTL0 &= ~LOCKLPM5;                       // Disable the GPIO power-on default high-impedance mode to activate
                                                 // previously configured port settings
 
 	__enable_interrupt();                       // Enable global interrupts
 
-	uint8_t i = 0;                              // variable to display
 	for(;;)                                     // loop forever!
 	{
-	    P1OUT |= ALLSEG;                        // disable all segments first
-	    P1OUT &= ~dispSegments(i);              // pull segments low
-	    WDT_waitAsec();
-	    i++;
-	    if(i>0x10) {i=0;}
+	    for(uint8_t i=0; i<16; i++){
+            P1OUT |= ALLSEG;                        // disable all segments first
+            P1OUT &= ~dispSegments(i);              // pull segments low
+            WDT_waitAsec();
+	    }
 	}
 }
 
