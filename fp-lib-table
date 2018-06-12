@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name Battery_MPD)(type KiCad)(uri "$(KIPRJMOD)/lib_fp/Battery_MPD.pretty")(options "")(descr ""))
+  (lib (name Switch_CK)(type KiCad)(uri "$(KIPRJMOD)/lib_fp/Switch_CK.pretty")(options "")(descr ""))
+  (lib (name Header)(type KiCad)(uri "$(KIPRJMOD)/lib_fp/Header.pretty")(options "")(descr ""))
+)
